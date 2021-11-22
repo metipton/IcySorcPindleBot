@@ -57,6 +57,7 @@
                         singlePlayerManager.JoinGame(isMulti);
                         singlePlayerManager.ManageStart();
                         singlePlayerManager.MoveToPortal();
+                        singlePlayerManager.CallToArms();
                         singlePlayerManager.TeleToPindle();
                         singlePlayerManager.ConductAttackSequence();
                         //singlePlayerManager.ConductExtendedAttack();

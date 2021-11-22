@@ -44,16 +44,23 @@ namespace IcySorcPindleBot.Helpers
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
 
-
-            using (var message = new MailMessage(fromAddress, toAddress)
+            try
             {
-                Subject = body,
-                Body = ""
-            })
-            {
-                smtp.Send(message);
-                Console.WriteLine("Items found. Email sent.");
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = body,
+                    Body = ""
+                })
+                {
+                    smtp.Send(message);
+                    Console.WriteLine("Items found. Email sent.");
+                }
             }
+            catch
+            {
+                Console.WriteLine("Failed to send text.");
+            }
+
         }
     }
 }

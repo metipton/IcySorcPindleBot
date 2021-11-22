@@ -14,24 +14,24 @@ namespace IcySorcPindleBot.Helpers
             // WP1
             inputs.RealisticMouseMove(D2handle, 606, 906, 12, 5, 2);
             Input.LeftMouseClick();
-            Thread.Sleep(900);
+            Thread.Sleep(1200);
 
 
             // wp2
             inputs.RealisticMouseMove(D2handle, 790, 605, 12, 5, 2);
             Input.LeftMouseClick();
-            Thread.Sleep(900);
+            Thread.Sleep(1200);
 
 
             //WP3
             inputs.RealisticMouseMove(D2handle, 850, 712, 12, 5, 2);
             Input.LeftMouseClick();
-            Thread.Sleep(900);
+            Thread.Sleep(1200);
 
             // WP4
             inputs.RealisticMouseMove(D2handle, 1039, 673, 12, 5, 2);
             Input.LeftMouseClick();
-            Thread.Sleep(900);
+            Thread.Sleep(1200);
         }
 
         public void FromStashDecisionToPortal(IntPtr D2handle)

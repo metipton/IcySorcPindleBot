@@ -17,6 +17,15 @@
 
             return checkRed && checkGreen && checkBlue;
         }
+        public static bool IsWithinBorderColorRange(uint color)
+        {
+            var isWhite = (color & 0x00FF0000) >> 16 == 0xFF && (color & 0x0000FF00) >> 8 == 0xFF && (color & 0x000000FF) == 0xFF;
+            var checkRed = (color & 0x00FF0000) >> 16 <= 0x30;
+            var checkGreen = (color & 0x0000FF00) >> 8 <= 0x30;
+            var checkBlue = (color & 0x000000FF) <= 0x30;
+
+            return isWhite || (checkRed && checkGreen && checkBlue);
+        }
 
         public static bool IsPortalBorderColor(uint color)
         {

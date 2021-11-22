@@ -50,7 +50,7 @@ namespace IcySorcPindleBot.Helpers
                 }
 
                 var croppedBmp = bitmap.Clone(screenRect, PixelFormat.Format32bppRgb);
-                croppedBmp.Save(@"C:\Users\michael\source\repos\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\imgcapture.png", System.Drawing.Imaging.ImageFormat.Png);
+                croppedBmp.Save(@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\imgcapture.png", System.Drawing.Imaging.ImageFormat.Png);
 
                 return croppedBmp;
             }
@@ -124,7 +124,7 @@ namespace IcySorcPindleBot.Helpers
         {
             var color = GetPixelColor(D2handle, row, col);
 
-            var color1checks = Math.Abs(color.R - 39) <= 15 && Math.Abs(color.R - 39) <= 15 && Math.Abs(color.R - 39) <= 15;
+            var color1checks = Math.Abs(color.R - 39) <= 15 && Math.Abs(color.G - 39) <= 15 && Math.Abs(color.B - 39) <= 15;
 
             return color1checks;
         }
@@ -175,7 +175,7 @@ namespace IcySorcPindleBot.Helpers
             }
 
             bmp.UnlockBits(data);
-            bmp.Save(@"C:\Users\michael\source\repos\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\PortalSearch.png", System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(@"C:\Users\michael\source\repos\Pixelbot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\PortalSearch.png", System.Drawing.Imaging.ImageFormat.Png);
             bmp.Dispose();
             return new Point((left + right) / 2, (top + bottom) / 2);
         }

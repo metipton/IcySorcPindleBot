@@ -17,7 +17,7 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
         readonly List<string> keepMagicals = new List<string>() { "SMALLCHARM", "GRANDCHARM" };
         readonly List<string> keepWhites = new List<string>() { "SUPERHEALINGPOTION"};
         readonly List<string> keepUnique = new List<string>() { "VAMPIREBONEGLOVES","HIEROPHANTTROPHY","UNEARTHEDWAND","ELDRITCHORB","DIMENSIONALSHARD","GILDEDSHIELD","SCARABSHELLBOOTS","RUSSETARMOR", "MESHARMOR", "DUSKSHROUD", "KRAKENSHELL", "CUIRASS", "BALROGSKIN", "SHACO", "SWIRLINGCRYSTAL", "RING", "AMULET", "SERPENTSKINARMOR", "BATTLEBOOTS", "CHAINGLOVES","DEMONHEAD", "CORONA", "DIADEM", "SPIREDHELM", "GRIMHELM" , "JEWEL", "BERSERKERAXE", "HYDRABOW", "OGREAXE", "THRESHER", "YARI"   };
-        readonly List<string> uniqueExclusion = new List<string>() { "ARBALEST", "ATAGHAN", "BATTLEAXE", "BATTLEHAMMER", "BRANDISTOCK", "BREASTPLATE", "CAP", "CHAINBOOTS", "CLAYMORE", "CUTLESS", "DEFENDER", "DEVILSTAR", "DIRK", "DIVINESCEPTER", "DOUBLEAXE", "FERALCLAWS", "FLAMBERGE", "FULLHELM", "GIANTAXE", "GRANDSCEPTER", "GREATAXE", "GOTHICSWORD", "HALBERD", "KNOUT", "KRIS", "LEGENDARYMALLET", "LONGSWORD", "MACE", "MATRIARCHALBOW", "MILITARYPICK", "OGREMAUL", "DGREMAVL", "PARTIZAN", "PAVISE", "PIKE", "PLATEMAIL", "SALLET", "SASH", "SCALEMAIL", "SCUTUM", "SHAMSHIR", "SHARKSKINBELT", "SKULLCAP", "SPIKEDCLUB", "SPIKEDSHIELD", "SPETUM", "STUDDEDLEATHER", "WARCLUB", "WARSCEPTER", "WARSWORD", "WINGEDHELM" };
+        readonly List<string> uniqueExclusion = new List<string>() { "ARBALEST", "ATAGHAN", "BATTLEAXE", "BATTLEHAMMER", "BILL", "BRANDISTOCK", "BREASTPLATE", "CAP", "CEDARBW", "CHAINBOOTS", "CINQUEDEAS", "CHAINMAIL", "CLAYMORE", "CROWN", "CUTLESS", "DEFENDER", "DEVILSTAR", "DIRK", "DIVINESCEPTER", "DOUBLEAXE", "FERALCLAWS", "FLAMBERGE", "FULLHELM", "GIANTAXE", "GRANDSCEPTER", "GREATAXE", "GOTHICSWORD", "HALBERD", "HEAVYBTS", "KNOUT", "KRIS", "LEGENDARYMALLET", "LONGSWORD", "MACE", "MATRIARCHALBOW", "MILITARYPICK", "OGREMAUL", "DGREMAVL", "PARTIZAN", "PAVISE", "PIKE", "PLATEMAIL", "SALLET", "SASH", "SCALEMAIL", "SCUTUM", "SHAMSHIR", "SHARKSKINBELT", "SHRTWARB", "SKULLCAP", "SPIKEDCLUB", "SPIKEDSHIELD", "SPETUM", "SPLINTMAIL", "STUDDEDLEATHER", "VULGE", "WARCLUB", "WARSCEPTER", "WARSWORD", "WINGEDHELM" };
         readonly List<string> keepSet = new List<string>() { "AMULET", "LACQUEREDPLATE", "BRAMBLEMITTS", "WINGEDHELM", "BATTLEBOOTS", "CADUCEUS", "VORTEXSHIELD", "CORONA", "SACREDARMOR", "HEAVYBRACERS"};
         int Width = 0;
         int Height = 0;
@@ -58,7 +58,7 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
             //cloneBmp.UnlockBits(data);
             //cloneBmp.Dispose();
 
-            bmp.Save(@"C:\Users\michael\source\repos\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\finditems.png", System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\finditems.png", System.Drawing.Imaging.ImageFormat.Png);
             var items = GetKeepItems(D2handle, ClearFakeItems(bmp, this.Items));
             bmp.Dispose();
 
@@ -99,7 +99,7 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
             //cloneBmp.UnlockBits(data);
             //cloneBmp.Dispose();
 
-            bmp.Save(@"C:\Users\michael\source\repos\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\finditems.png", System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\finditems.png", System.Drawing.Imaging.ImageFormat.Png);
             var items = ClearFakeItems(bmp, this.Items);
             bmp.Dispose();
 
@@ -223,7 +223,7 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
                 var croppedBmp = bmp.Clone(rect, PixelFormat.Format32bppRgb);
 
                 ConvertBitmapToBlackWhite(croppedBmp, item.ItemType);
-                croppedBmp.Save($@"C:\Users\michael\source\repos\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\itemname{counter}.png", System.Drawing.Imaging.ImageFormat.Png);
+                croppedBmp.Save($@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\itemname{counter}.png", System.Drawing.Imaging.ImageFormat.Png);
                 item.ItemName = ReadWordFromScreen(croppedBmp);
                 counter++;
                 croppedBmp.Dispose();
@@ -247,7 +247,11 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
                         uint* dataPointer = (uint*)data.Scan0;
                         uint* pixelPointer = dataPointer + i * strideInPixels + j;
                         uint color = *pixelPointer;
-                        if (color != 0xFFFFFFFF)
+                        if (ColorHelper.IsWithinBorderColorRange(color))
+                        {
+                            *pixelPointer = 0xFFFFFFFF;
+                        }
+                        else
                         {
                             *pixelPointer = 0xFF000000;
                         }

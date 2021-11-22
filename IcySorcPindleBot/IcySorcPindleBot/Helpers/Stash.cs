@@ -43,6 +43,16 @@ namespace IcySorcPindleBot.Helpers
             return new Point(0, 0);
         }
 
+        private bool IsCurrentClear(IntPtr D2handle, int row, int col)
+        {
+            if (views.IsEmptyStashSquare(D2handle, row, col))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public bool InventoryHasItems(IntPtr D2handle)
         {
             OpenInventory(D2handle);
@@ -71,7 +81,7 @@ namespace IcySorcPindleBot.Helpers
 
             ChangeStashTab(D2handle);
             var itemLocation = GetItemLocation(D2handle);
-            var current = itemLocation;
+
             while (itemLocation.X != 0 && itemLocation.Y != 0)
             {
                 inputs.RealisticMouseMove(D2handle, itemLocation.X, itemLocation.Y, 7, 4, 1);
@@ -81,14 +91,13 @@ namespace IcySorcPindleBot.Helpers
                 Thread.Sleep(200);
                 Input.SendKey(0x1D, true, Input.InputType.Keyboard);
 
-                itemLocation = GetItemLocation(D2handle);
-
-                if(itemLocation.X == current.X && itemLocation.Y == current.Y)
+                if(!IsCurrentClear(D2handle, itemLocation.X, itemLocation.Y))
                 {
                     this.currentStashTab++;
                     ChangeStashTab(D2handle);
                 }
-                current = itemLocation;
+
+                itemLocation = GetItemLocation(D2handle);
             }
 
             CloseStashOrInventory(D2handle);

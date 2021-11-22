@@ -39,7 +39,7 @@ namespace IcySorcPindleBot
                 {
                     inputs.RealisticMouseMove(D2handle, 900, 972, 14, 2, 1);
                     Input.LeftMouseClick();
-                    Thread.Sleep(500);
+                    Thread.Sleep(2000);
                     isInDifficultySelection = views.IsInDifficultySelection(D2handle);
                 }
 
@@ -100,6 +100,11 @@ namespace IcySorcPindleBot
         public void TeleToPindle()
         {
             move.TeleToPindle(D2handle, 0x3C);
+        }
+
+        public void CallToArms()
+        {
+            actions.CallToArms(D2handle); 
         }
 
         public void ConductAttackSequence()
