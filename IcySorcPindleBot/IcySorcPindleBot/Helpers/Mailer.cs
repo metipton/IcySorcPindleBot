@@ -19,7 +19,7 @@ namespace IcySorcPindleBot.Helpers
             var fromAddress = new MailAddress("icysorcpindlebot@gmail.com", "From Name");
             var toAddress = new MailAddress("4432541679@vtext.com", "To Name");
             const string fromPassword = "tipton13!#";
-            var body = "";
+            var body = $"{DateTime.Now} Run number: {Globals.RUN_NUMBER} - ";
 
             foreach(var item in items)
             {

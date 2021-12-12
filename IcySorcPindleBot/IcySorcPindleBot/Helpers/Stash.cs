@@ -15,19 +15,6 @@ namespace IcySorcPindleBot.Helpers
 
             Thread.Sleep(100);
 
-            // used for single player char
-            //for(var row = 1320; row <=1780; row += 56)
-            //{
-            //    for (var col = 550; col <= 720; col += 55)
-            //    {
-            //        //item border color and empty stash color are effectively the same
-            //        if (!views.IsEmptyStashSquare(D2handle, row, col))
-            //        {
-            //            return new Point(row, col);
-            //        }
-            //    }
-            //}
-
             for (var row = 1320; row <= 1490; row += 55)
             {
                 for (var col = 550; col <= 720; col += 55)
@@ -59,7 +46,7 @@ namespace IcySorcPindleBot.Helpers
 
             var hasItems = false;
 
-            for (var row = 1320; row <= 1780; row += 56)
+            for (var row = 1320; row <= 1490; row += 56)
             {
                 for (var col = 550; col <= 720; col += 55)
                 {

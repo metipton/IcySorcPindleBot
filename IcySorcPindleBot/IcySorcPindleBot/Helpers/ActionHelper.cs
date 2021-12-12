@@ -103,6 +103,8 @@ namespace IcySorcPindleBot.Helpers
             {
                 Console.WriteLine("Failed to find portal after 5 attempts. Leaving game.");
                 LeaveGame(D2handle);
+                Thread.Sleep(5000);
+                throw new Exception("Restarting run");
             }
 
             while (!view.IsTempleLoaded(D2handle))

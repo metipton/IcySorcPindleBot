@@ -78,7 +78,7 @@ namespace IcySorcPindleBot.Helpers
 
             inputs.RealisticMouseMove(D2handle, 360, 837, 8, 5, 2);
             Input.LeftMouseClick();
-            Thread.Sleep(1300);
+            Thread.Sleep(1500);
         }
 
         public void TeleToPindle(IntPtr D2handle, byte teleHotkey)

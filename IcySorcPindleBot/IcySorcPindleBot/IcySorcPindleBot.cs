@@ -51,9 +51,9 @@
                 }
                 else
                 {
-                    if (!inGame)
+                    try
                     {
-                        Console.WriteLine(@$"Starting run: {runCount}");
+                        Console.WriteLine(@$"Starting run: {Globals.RUN_NUMBER}");
                         singlePlayerManager.JoinGame(isMulti);
                         singlePlayerManager.ManageStart();
                         singlePlayerManager.MoveToPortal();
@@ -63,10 +63,15 @@
                         //singlePlayerManager.ConductExtendedAttack();
                         singlePlayerManager.MoveToLoot();
                         singlePlayerManager.PickUpItems();
-                        singlePlayerManager.LeaveGame();
-                        inGame = false;
-                        runCount++;
+                        singlePlayerManager.LeaveGame();     
                     }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        singlePlayerManager.LeaveGame();
+                    }
+
+                    Globals.RUN_NUMBER++;
                 }
 
                 //while (true)
