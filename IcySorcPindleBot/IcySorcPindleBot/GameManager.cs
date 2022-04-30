@@ -37,13 +37,13 @@ namespace IcySorcPindleBot
                 var isInDifficultySelection = views.IsInDifficultySelection(D2handle);
                 while (!isInDifficultySelection)
                 {
-                    inputs.RealisticMouseMove(D2handle, 900, 972, 14, 2, 1);
+                    inputs.RealisticMouseMove(D2handle, 850, 972, 14, 2, 1);
                     Input.LeftMouseClick();
                     Thread.Sleep(2000);
                     isInDifficultySelection = views.IsInDifficultySelection(D2handle);
                 }
 
-                inputs.RealisticMouseMove(D2handle, 954, 570, 14, 2, 21);
+                inputs.RealisticMouseMove(D2handle, 954, 500, 14, 2, 21);
                 Thread.Sleep(500);
                 Input.LeftMouseClick();
                 Thread.Sleep(2000);

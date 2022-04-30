@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace IcySorcPindleBot.Helpers.ItemHelper
@@ -13,99 +14,164 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
         ColorHelper colors = new ColorHelper();
         Potion potion = Potion.GetInstance();
         readonly List<string> keepRunes = new List<string>() { "LEMRUNE", "PULRUNE", "UMRUNE", "MALRUNE", "ISTRUNE", "GULRUNE", "VEXRUNE", "OHMRUNE", "LORUNE", "SURRUNE", "BERRUNE", "JAHRUNE", "CHAMRUNE", "ZODRUNE" };
-        readonly List<string> runeExclusionList = new List<string>() { "ELDRUNE", "TIRRUNE", "NEFRUNE", "ETHRUNE", "ITHRUNE", "TALRUNE", "RALRUNE", "RTRUNE", "THULRUNE", "AMNRUNE", "SLRUNE", "SHAELRUNE", "DLRUNE", "HELRUNE", "IRUNE", "KRUNE" };
-        readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING", "LEATHERGLOVES", "HEAVYGLOVES", "CHAINGLOVES", "LIGHTGAUNTLETS", "GAUNTLETS", "DEMONHIDEGLOVES", "SHARKSKINGLOVES", "HEAVYBRACERS", "BATTLEGAUNTLETS", "WARGAUNTLETS", "BRAMBLEMITTS", "VAMPIREBONEGLOVES", "VAMBRACES", "CRUSADERGAUNTLETS", "OGREGAUNTLETS" };
+        readonly List<string> runeExclusionList = new List<string>() { "ELRUNE", "ELDRUNE", "TIRRUNE", "NEFRUNE", "ETHRUNE", "ITHRUNE", "TALRUNE", "RALRUNE", "RTRUNE", "THULRUNE", "AMNRUNE", "SLRUNE", "SHAELRUNE", "DLRUNE", "HELRUNE", "IRUNE", "KRUNE" };
+        readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING" };
+        //readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING", "LEATHERGLOVES", "HEAVYGLOVES", "CHAINGLOVES", "LIGHTGAUNTLETS", "GAUNTLETS", "DEMONHIDEGLOVES", "SHARKSKINGLOVES", "HEAVYBRACERS", "BATTLEGAUNTLETS", "WARGAUNTLETS", "BRAMBLEMITTS", "VAMPIREBONEGLOVES", "VAMBRACES", "CRUSADERGAUNTLETS", "OGREGAUNTLETS" };
         readonly List<string> keepMagicals = new List<string>() { "SMALLCHARM", "LARGECHARM", "GRANDCHARM", "MONARCH", "JEWEL" };
         readonly List<string> MagicalTrashList = new List<string> { "RNDEL", "HEL", "DGEL" };
         readonly List<string> keepWhites = new List<string>() { "SUPERHEALINGPOTION"};
         readonly List<string> keepUnique = new List<string>() { "VAMPIREBONEGLOVES","HIEROPHANTTROPHY","UNEARTHEDWAND","ELDRITCHORB","DIMENSIONALSHARD","GILDEDSHIELD","SCARABSHELLBOOTS","RUSSETARMOR", "MESHARMOR", "DUSKSHROUD", "KRAKENSHELL", "CUIRASS", "BALROGSKIN", "SHACO", "SWIRLINGCRYSTAL", "RING", "AMULET", "SERPENTSKINARMOR", "BATTLEBOOTS", "CHAINGLOVES","DEMONHEAD", "CORONA", "DIADEM", "SPIREDHELM", "GRIMHELM" , "JEWEL", "BERSERKERAXE", "HYDRABOW", "OGREAXE", "THRESHER", "YARI"   };
-        readonly List<string> uniqueExclusion = new List<string>() { "AEGIS", "ANCIENTARMR", "ANCIENTAXE", "ANCIENTSHIELD", "ARBALEST", "ARMET", "ATAGHAN", "AXE", "BALRGBLADE", "BALRGSPEAR", "BARBEDCLUB", "BARBEDSHIELD", "BARDICHE", "BASTARDSWORD", "BATTLEAXE", "BATTLECESTUS", "BATTLEDART", "BATTLEHAMMER", "BATTLESCYTHE", "BATTLESTAFF", "BECDECRBIN", "BELT", "BILL", "BLADE", "BONEHELM", "BONESHIELD", "BRANDISTOCK", "BREASTPLATE", "BROADSWORD", "CAP", "CEDARBW", "CHAINBTS", "CHAINMAIL", "CHAMPINSWORD", "CHASSARMOR", "CHUKNU", "CINQUEDEAS", "CHAINMAIL", "CHAMPIONAXE", "CLAYMORE", "CLEAVER", "CLSCROSSBOW", "CROSSBOW", "CROWN", "CRYPTICSWORD", "CUDGEL", "CUTLESS", "DACIANFALX", "DEATHMASK", "DEATHIMMASK", "DECAPITATOR", "DEFENDER", "DEMONHIDESASH", "DEVILSTAR", "DIRK", "DIVINESCEPTER", "DOUBLEAXE", "DRAGONSHIELD", "EDGEBW", "ELDERSTAFF", "EMBOSSEDPLATE", "ESPANDN", "FALCHION", "FERALCLAWS", "FIELDPLATE", "FLAIL", "FLAMBERGE", "FLYINGAXE", "FRANCISCA", "FULLHELM", "FULLPLATEMAIL", "FULLTPLATEIMAIL", "FUSCINA", "GAUNTLETS", "GHOSTARMOR", "GIANTAXE", "GIANTSWRD", "GLADIUS", "GRANDSCEPTER", "GREATAXE", "GREATHELM", "GREATSWORD", "GRIMWAND", "GOTHICAXE", "GTHICBW", "GTHICPLATE", "GOTHICSWORD", "GRANDCROWN", "GREAVES", "GRIMSCYTHE", "HALBERD", "HARDLEATHERARMOR", "HATCHET", "HEAVYBTS", "HEAVYCROSSBOW", "HELM", "HUNTERSBOW", "HYPERINSPEAR", "KITESHIELD", "KNOUT", "KRAKENSHELL", "KRIS", "LANCE", "ARGESHIELD", "LEGENDARYMALLET", "LIGHTBELT", "LIGHTCROSSBOW", "LIGHTPLATE", "LINKEDMAIL", "LOCHABERAXE", "LNGBATTLEBW", "LONGSTAFF", "LONGSWORD", "LNGBW", "LNGWARB", "LUNA", "MACE", "MANCATCHER", "ITANCATCHER", "MARTELDEFER", "MASK", "MATRIARCHALBOW", "MORNINGSTAR", "MAUL", "NAGA", "MESHBELT", "MILITARYPICK", "OGREMAUL", "DGREMAVL", "PARTIZAN", "PAVISE", "PHASEBLADE", "PIKE", "PLATEMAIL", "POIGNARD", "POLEAXE", "RINGMAIL", "RNDEL", "RUNDSHIELD", "RUNESCEPTER", "RUNESTAFF", "RUNESWORD", "SABRE", "SALLET", "SASH", "SCALEMAIL", "SCUTUM", "SCYTHE", "SHADOWPLATE", "SHAMSHIR", "SHARKSKINBELT", "SHARKTOOTHARMOR", "SHRTBATTLEB", "SHORTSWORD", "SHRTWARB", "SIEGECROSSBOW", "SILVEREDGEDAXE", "SKULLCAP", "SALLSHIELD", "SPEAR", "SPIKEDCLUB", "SPIKEDSHIELD", "SPETUM", "SPLINTMAIL", "STUDDEDLEATHER", "TABAR", "THUNDERMAUL", "TOMAHAWK", "TWERSHIELD", "TRELLISEDARMOR", "TRIDENT", "TROLLNEST", "TRUNCHEON", "TWINAXE", "TWHANDEDSWORD", "TYRANTCLUB", "VULGE", "WARAXE", "WARCLUB", "WARGAUNTLETS", "WARFORK", "WARHAMMER", "WARSCEPTER", "WARSPEAR", "WARSPIKE", "WARSTAFF", "WARSWORD", "WINGEDAXE", "WINGEDHELM", "WIREFLEECE", "ZAKARUMSHIELD" };
-        readonly List<string> keepSet = new List<string>() { "AMULET", "LACQUEREDPLATE", "BRAMBLEMITTS", "WINGEDHELM", "BATTLEBOOTS", "CADUCEUS", "VORTEXSHIELD", "CORONA", "SACREDARMOR", "HEAVYBRACERS"};
+        readonly List<string> uniqueExclusion = new List<string>() { "AEGIS", "ANCIENTARMR", "ANCIENTAXE", "ANCIENTSHIELD", "ARBALEST", "ARMET", "ATAGHAN", "AXE", "BALLISTA", "BALRGBLADE", "BALRGSPEAR", "BARBEDCLUB", "BARBEDSHIELD", "BARDICHE", "BASINET", "BASTARDSWORD", "BATTLEAXE", "BATTLEBELT", "BATTLECESTUS", "BATTLEDART", "BATTLEHAMMER", "BATTLESCYTHE", "BATTLESTAFF", "BATTLESWRD", "BEARDEDAXE", "BECDECRBIN", "BELT", "BILL", "BLADE", "BALDEBARRIER", "BONEHELM", "BONESHIELD", "BONEWAND", "BRANDISTOCK", "BREASTPLATE", "BROADAXE", "BROADSWORD", "CAP", "CEDARBW", "CEREMONIALPIKE", "CHAINBTS", "CHAINMAIL", "CHAMPINSWORD", "CHASSARMOR", "CHUKNU", "CINQUEDEAS", "CHAINMAIL", "CHAMPIONAXE", "CLAYMORE", "CLEAVER", "CLSCROSSBOW", "CROSSBOW", "CROWN", "CRYPTICSWORD", "CUDGEL", "CUTLESS", "DACIANFALX", "DEATHMASK", "DEATHIMMASK", "DECAPITATOR", "DEFENDER", "DEMONHIDEGLOVES", "DEMONHIDESASH", "DEVILSTAR", "DIMENSIONALBLADE", "DIRK", "DIVINESCEPTER", "DOUBLEAXE", "DRAGONSHIELD", "EDGEBW", "ELDERSTAFF", "ELEGANTBLADE", "EMBOSSEDPLATE", "ESPANDN", "ETTINAXE", "EXECUTIONERSWORD", "FALCHION", "FERALCLAWS", "FIELDPLATE", "FLAIL", "FLAMBERGE", "FLANGEDMACE", "FLYINGAXE", "FRANCISCA", "FULLHELM", "FULLPLATEMAIL", "FULLTPLATEIMAIL", "FUSCINA", "GAUNTLETS", "GHOSTARMOR", "GIANTAXE", "GIANTSWRD", "GLADIUS", "GRANDSCEPTER", "GREATAXE", "GREATHELM", "GREATMAUL", "GREATSWORD", "GRIMWAND", "GOTHICAXE", "GTHICBW", "GTHICPLATE", "GOTHICSWORD", "GRANDCROWN", "GREAVES", "GRIMSCYTHE", "HALBERD", "HARDLEATHERARMOR", "HATCHET", "HEAVYBTS", "HEAVYCROSSBOW", "HEAVYGLOVES", "HELM", "HUNTERSBOW", "HYPERINSPEAR", "JAGGEDSTAR", "KITESHIELD", "KNOUT", "KRAKENSHELL", "KRIS", "LANCE", "LARGEAXE", "ARGESHIELD", "LEGENDARYMALLET", "LIGHTBELT", "LIGHTCROSSBOW", "LIGHTPLATE", "LIGHTPLATEDBTS", "LINKEDMAIL", "LOCHABERAXE", "LNGBATTLEBW", "LONGSTAFF", "LONGSWORD", "LNGBW", "LNGWARB", "LUNA", "MACE", "MANCATCHER", "ITANCATCHER", "MAGEPLATE", "MARTELDEFER", "MASK", "MATRIARCHALBOW", "MORNINGSTAR", "MAUL", "NAGA", "MESHBELT", "MILITARYPICK", "OGREMAUL", "DGREMAVL", "PARTIZAN", "PAVISE", "PHASEBLADE", "PIKE", "PLATEDBELT", "PLATEMAIL", "POIGNARD", "POLEAXE", "QUARTERSTAFF", "RAZRBW", "REPEATINGCROSSBOW", "RINGMAIL", "RNDEL", "RUNDSHIELD", "RUNESCEPTER", "RUNESTAFF", "RUNESWORD", "SABRE", "SALLET", "SASH", "SCALEMAIL", "SCUTUM", "SCYTHE", "SHADOWPLATE", "SHAMSHIR", "SHARKSKINBELT", "SHARKTOOTHARMOR", "SHRTBATTLEB", "SHORTSWORD", "SHRTWARB", "SIEGECROSSBOW", "SILVEREDGEDAXE", "SKULLCAP", "SALLSHIELD", "SPEAR", "SPIKEDCLUB", "SPIKEDSHIELD", "SPETUM", "SPLINTMAIL", "STILETTO", "STUDDEDLEATHER", "TABAR", "TEMPLARCOAT", "THUNDERMAUL", "TOMAHAWK", "TWERSHIELD", "TRELLISEDARMOR", "TRIDENT", "TROLLNEST", "TRUNCHEON", "TWINAXE", "TWHANDEDSWORD", "TYRANTCLUB", "VULGE", "WARAXE", "WARCLUB", "WARDBW", "WARGAUNTLETS", "WARFORK", "WARHAMMER", "WARHAT", "WARSCEPTER", "WARSCYTHE", "WARSPEAR", "WARSPIKE", "WARSTAFF", "WARSWORD", "WINGEDAXE", "WINGEDHELM", "WINGEDKNIFE", "ZAKARUMSHIELD" };
+        readonly List<string> keepSet = new List<string>() { "AMULET", "LACQUEREDPLATE", "SWIRLINGCRYSTAL", "DEATHMASK", "BATTLEBOOTS"};
+        //readonly List<string> keepSet = new List<string>() { "AMULET", "LACQUEREDPLATE", "BRAMBLEMITTS", "WINGEDHELM", "BATTLEBOOTS", "CADUCEUS", "VORTEXSHIELD", "CORONA", "SACREDARMOR", "HEAVYBRACERS" };
         int Width = 0;
         int Height = 0;
 
         private Random rnd = new();
 
-        public List<Item> FindItems(Bitmap bmp, IntPtr D2handle)
+        public List<Item> FindItemsUF(Bitmap bmp, IntPtr D2handle)
         {
             this.Items = new List<Item>();
             this.Width = bmp.Width;
             this.Height = bmp.Height;
-            var currItemIndex = 0;
-
-            //var cloneBmp = bmp.Clone(new Rectangle(0, 0, Width, Height), PixelFormat.Format32bppRgb);
 
             BitmapData data = bmp.LockBits(new Rectangle(0, 0, this.Width, this.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
             int strideInPixels = data.Stride / 4; //4 bytes per pixel
 
-            for (var j = 400; j < this.Width; j++)
+            var uniquePixels = new List<(int, int)>();
+            var setPixels = new List<(int, int)>();
+            var rarePixels = new List<(int, int)>();
+            var runePixels = new List<(int, int)>();
+            var magicalPixels = new List<(int, int)>();
+            var whitePixels = new List<(int, int)>();
+
+            for (var j = 200; j < this.Width - 200; j++)
             {
-                for (var i = 0; i < 800; i++)
+                for (var i = 150; i < this.Height - 300; i++)
                 {
                     unsafe
                     {
                         uint* dataPointer = (uint*)data.Scan0;
                         uint* pixelPointer = dataPointer + i * strideInPixels + j;
                         uint color = *pixelPointer;
-                        if (ColorHelper.IsItemBorderColor(color))
+                        if (colors.IsSpecialColor(color) == null)
                         {
-                            Items.Add(CreateNewItem(i, j));
-                            DFS(data, currItemIndex, i, j);
-                            currItemIndex++;
+                            continue;
+                        }
+                        else if(colors.IsSpecialColor(color).Equals("Unique"))
+                        {
+                            uniquePixels.Add((j, i));
+                        }
+                        else if (colors.IsSpecialColor(color).Equals("Set"))
+                        {
+                            setPixels.Add((j, i));
+                        }
+                        else if (colors.IsSpecialColor(color).Equals("Rare"))
+                        {
+                            rarePixels.Add((j, i));
+                        }
+                        else if (colors.IsSpecialColor(color).Equals("Rune"))
+                        {
+                            runePixels.Add((j, i));
+                        }
+                        else if (colors.IsSpecialColor(color).Equals("Magical"))
+                        {
+                            magicalPixels.Add((j, i));
+                        }
+                        else if (colors.IsSpecialColor(color).Equals("White"))
+                        {
+                            whitePixels.Add((j, i));
                         }
                     }
                 }
             }
 
-            //cloneBmp.UnlockBits(data);
-            //cloneBmp.Dispose();
+            var whites = GetUnionFindItems(UnionFind(whitePixels), whitePixels, "White");
+            var uniques = GetUnionFindItems(UnionFind(uniquePixels), uniquePixels, "Unique");
+            var rares = GetUnionFindItems(UnionFind(rarePixels), rarePixels, "Rare");
+            var sets = GetUnionFindItems(UnionFind(setPixels), setPixels, "Set");
+            var runes = GetUnionFindItems(UnionFind(runePixels), runePixels, "Rune");
+            var magical = GetUnionFindItems(UnionFind(magicalPixels), magicalPixels, "Magical");
+
+            this.Items = whites.Concat(uniques).Concat(rares).Concat(sets).Concat(runes).Concat(magical).ToList();
+
+            GetItemNames(bmp, this.Items);
 
             bmp.Save(@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\finditems.png", System.Drawing.Imaging.ImageFormat.Png);
-            var items = GetKeepItems(D2handle, ClearFakeItems(bmp, this.Items));
+
             bmp.Dispose();
+
+            var items = GetKeepItems(D2handle, ShouldConsider(this.Items));
 
             return items;
         }
 
-        public List<Item> GetAllItems(Bitmap bmp, IntPtr D2handle)
+        public List<Item> GetUnionFindItems(int[] unions, List<(int, int)> pixels, string itemType)
         {
-            this.Items = new List<Item>();
-            this.Width = bmp.Width;
-            this.Height = bmp.Height;
-            var currItemIndex = 0;
+            var itemDict = new Dictionary<int, Item>();
 
-            //var cloneBmp = bmp.Clone(new Rectangle(0, 0, Width, Height), PixelFormat.Format32bppRgb);
-
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, this.Width, this.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-            int strideInPixels = data.Stride / 4; //4 bytes per pixel
-
-            for (var j = 400; j < this.Width; j++)
+            for(var i = 0; i < unions.Length; i++)
             {
-                for (var i = 0; i < 800; i++)
+                if (!itemDict.ContainsKey(Find(unions,i)))
                 {
-                    unsafe
-                    {
-                        uint* dataPointer = (uint*)data.Scan0;
-                        uint* pixelPointer = dataPointer + i * strideInPixels + j;
-                        uint color = *pixelPointer;
-                        if (ColorHelper.IsItemBorderColor(color))
-                        {
-                            Items.Add(CreateNewItem(i, j));
-                            DFS(data, currItemIndex, i, j);
-                            currItemIndex++;
-                        }
-                    }
+                    itemDict[Find(unions, i)] = new Item(pixels[i].Item2, pixels[i].Item1, itemType);
+                }
+                else
+                {
+                    itemDict[Find(unions, i)].ExpandBounds(pixels[i].Item2, pixels[i].Item1);
                 }
             }
 
-            //cloneBmp.UnlockBits(data);
-            //cloneBmp.Dispose();
-
-            bmp.Save(@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\finditems.png", System.Drawing.Imaging.ImageFormat.Png);
-            var items = ClearFakeItems(bmp, this.Items);
-            bmp.Dispose();
+            var items = new List<Item>();
+            foreach(var item in itemDict.Keys)
+            {
+                items.Add(itemDict[item]);
+            }
 
             return items;
+        }
+
+        public int[] UnionFind(List<(int, int)> initialPixels)
+        {
+            var parents = new int[initialPixels.Count];
+
+            for (var i = 0; i < parents.Length; i++)
+            {
+                parents[i] = i;
+            }
+
+            for(var i = 0; i < initialPixels.Count; i++)
+            {
+                for(var j = 0; j < initialPixels.Count; j++)
+                {
+                    if(i != j)
+                    {
+                        var xDistance = Math.Abs(initialPixels[i].Item1 - initialPixels[j].Item1);
+                        var yDistance = Math.Abs(initialPixels[i].Item2 - initialPixels[j].Item2);
+                        if (xDistance < 25 && yDistance < 8)
+                        {
+                            Union(parents, i, j);
+                        }
+                    }
+                }          
+            }
+
+            return parents;
+        }
+
+        public int Find(int[] parents, int y)
+        {
+            if(parents[y] != y)
+            {
+                return Find(parents, parents[y]);
+            }
+
+            return y;
+        }
+
+        public void Union(int[] parents, int x, int y)
+        {
+            parents[Find(parents,x)] = Find(parents, y);
         }
 
         public Point GetItemClickPoint(Item item)
@@ -220,8 +286,17 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
             var counter = 0;
             foreach (var item in items)
             {
-                Rectangle rect = new Rectangle(new Point(item.Left, item.Top), new Size(item.Right - item.Left, item.Bottom - item.Top));
+                var left = item.Left - 5 >= 0 ? item.Left - 5 : item.Left;
+                var right = item.Right + 5 < bmp.Width ? item.Right + 5 : item.Right;
+                var top = item.Top - 5 >= 0 ? item.Top - 5 : item.Top;
+                var bottom = item.Bottom + 5 < bmp.Height ? item.Bottom + 5 : item.Bottom;
 
+                Rectangle rect = new Rectangle(new Point(left, top), new Size(right - left, bottom - top));
+
+                if(rect.Width <= 0 || rect.Height <= 0)
+                {
+                    return;
+                }
                 var croppedBmp = bmp.Clone(rect, PixelFormat.Format32bppRgb);
 
                 ConvertBitmapToBlackWhite(croppedBmp, item.ItemType);
@@ -266,14 +341,12 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
 
         public string ReadWordFromScreen(Bitmap bmp)
         {
-
             var ocr = new IronTesseract();
 
             ocr.Language = OcrLanguage.English;
             ocr.Configuration.WhiteListCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             using (var input = new OcrInput(bmp))
             {
-
                 return ocr.Read(input).Text.Trim();
             }
         }
@@ -285,13 +358,15 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
                 return true;
             }
 
-            if (item.ItemType == "Rune" && !runeExclusionList.Contains(item.ItemName))
+            if (item.ItemType == "Rune" )
             {
+                //&& !runeExclusionList.Contains(item.ItemName)
                 return true;
             }
 
-            if (item.ItemType == "Set" && CheckAllEditDistance(item.ItemName, keepSet, 3))
+            if (item.ItemType == "Set" )
             {
+                //&& CheckAllEditDistance(item.ItemName, keepSet, 3)
                 return true;
             }
 
@@ -347,26 +422,6 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
             }
 
             return itemTypeList;
-        }
-
-
-        private List<Item> ClearFakeItems(Bitmap bmp, List<Item> initialItems)
-        {
-            var actualItems = new List<Item>();
-            var considerItems = ShouldConsider(initialItems);
-            considerItems = HasItemType(considerItems);
-
-            GetItemNames(bmp, considerItems);
-
-            foreach(var item in considerItems)
-            {
-                if (item.ItemName != null)
-                {
-                    actualItems.Add(item);
-                }
-            }
-
-            return actualItems;
         }
 
         private List<Item> GetKeepItems(IntPtr D2handle, List<Item> items)

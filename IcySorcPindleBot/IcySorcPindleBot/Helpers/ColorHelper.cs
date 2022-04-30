@@ -2,18 +2,18 @@
 {
     public class ColorHelper
     {
-        readonly uint Unique = 0xFFD4C491;
-        readonly uint Set = 0xFF00FD00;
-        readonly uint Rune = 0xFFFFBB00;
-        readonly uint Rare = 0xFFFFFF7F;
-        readonly uint Magical = 0xFF8888FF;
-        readonly uint White = 0xFFF4F4F4;
+        readonly uint Unique = 0xFFCDBA82;
+        readonly uint Set = 0xFF00FC00;
+        readonly uint Rune = 0xFFFFB000;
+        readonly uint Rare = 0xFFFFFF70;
+        readonly uint Magical = 0xFF7979FF;
+        readonly uint White = 0xFFF2F2F2;
 
-        public static bool IsItemBorderColor(uint color)
+    public static bool IsItemBorderColor(uint color)
         {
-            var checkRed = (color & 0x00FF0000) >> 16 <= 0x08;
-            var checkGreen = (color & 0x0000FF00) >> 8 <= 0x08;
-            var checkBlue = (color & 0x000000FF) <= 0x08;
+            var checkRed = (color & 0x00FF0000) >> 16 <= 0x05;
+            var checkGreen = (color & 0x0000FF00) >> 8 <= 0x05;
+            var checkBlue = (color & 0x000000FF) <= 0x05;
 
             return checkRed && checkGreen && checkBlue;
         }

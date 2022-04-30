@@ -23,12 +23,14 @@ namespace IcySorcPindleBot.Helpers
                     IntPtr hSrcDC = gsrc.GetHdc();
                     IntPtr hDC = gdest.GetHdc();
                     int retval = BitBlt(hDC, 0, 0, 1, 1, hSrcDC, x, y, (int)CopyPixelOperation.SourceCopy);
-                    gdest.ReleaseHdc();
-                    gsrc.ReleaseHdc();
+                    gdest.Dispose();
+                    gsrc.Dispose();
                 }
             }
 
-            return screenPixel.GetPixel(0, 0);
+            var color = screenPixel.GetPixel(0, 0);
+            screenPixel.Dispose();
+            return color; ;
         }
 
         public static Bitmap GetMapFromScreen(IntPtr D2handle)
@@ -58,11 +60,29 @@ namespace IcySorcPindleBot.Helpers
 
         public bool IsInDifficultySelection(IntPtr D2handle)
         {
-            var color1 = GetPixelColor(D2handle, 1062, 453);
-            var color2 = GetPixelColor(D2handle, 855, 452);
+            var color1 = GetPixelColor(D2handle, 1061, 454);
+            var color2 = GetPixelColor(D2handle, 855, 453);
 
-            var color1checks = Math.Abs(color1.R - 71) <= 10 && Math.Abs(color1.G - 173) <= 10 && Math.Abs(color1.B - 253) <= 10;
-            var color2checks = Math.Abs(color2.R - 95) <= 10 && Math.Abs(color2.G - 230) <= 10 && Math.Abs(color2.B - 254) <= 10;
+            var color1checks = Math.Abs(color1.R - 12) <= 20 && Math.Abs(color1.G - 26) <= 20 && Math.Abs(color1.B - 45) <= 20;
+            var color2checks = Math.Abs(color2.R - 22) <= 20 && Math.Abs(color2.G - 42) <= 20 && Math.Abs(color2.B - 70) <= 20;
+
+            if (color1checks)
+            {
+                Console.WriteLine("color 1 true");
+            }
+            else
+            {
+                Console.WriteLine("Color 1 false");
+            }
+
+            if (color2checks)
+            {
+                Console.WriteLine("color 2 true");
+            }
+            else
+            {
+                Console.WriteLine("Color 2 false");
+            }
 
             return color1checks && color2checks;
         }
@@ -72,8 +92,8 @@ namespace IcySorcPindleBot.Helpers
             var color1 = GetPixelColor(D2handle, 1593, 761);
             var color2 = GetPixelColor(D2handle, 611, 883);
 
-            var color1checks = Math.Abs(color1.R - 62) <= 3 && Math.Abs(color1.G - 57) <= 3 && Math.Abs(color1.B - 47) <= 3;
-            var color2checks = Math.Abs(color2.R - 82) <= 10 && Math.Abs(color2.G - 68) <= 10 && Math.Abs(color2.B - 55) <= 10;
+            var color1checks = Math.Abs(color1.R - 51) <= 8 && Math.Abs(color1.G - 45) <= 8 && Math.Abs(color1.B - 36) <= 8;
+            var color2checks = Math.Abs(color2.R - 62) <= 10 && Math.Abs(color2.G - 54) <= 10 && Math.Abs(color2.B - 41) <= 10;
 
             return color1checks && color2checks;
         }
@@ -94,8 +114,8 @@ namespace IcySorcPindleBot.Helpers
             var color1 = GetPixelColor(D2handle, 1664, 136);
             var color2 = GetPixelColor(D2handle, 1885, 27);
 
-            var color1checks = Math.Abs(color1.R - 95) <= 10 && Math.Abs(color1.G - 75) <= 8 && Math.Abs(color1.B - 50) <= 5;
-            var color2checks = Math.Abs(color2.R - 48) <= 5 && Math.Abs(color2.G - 39) <= 5 && Math.Abs(color2.B - 28) <= 5;
+            var color1checks = Math.Abs(color1.R - 85) <= 10 && Math.Abs(color1.G - 65) <= 8 && Math.Abs(color1.B - 40) <= 8;
+            var color2checks = Math.Abs(color2.R - 38) <= 5 && Math.Abs(color2.G - 30) <= 5 && Math.Abs(color2.B - 21) <= 5;
 
             return color1checks && color2checks;
         }
@@ -124,7 +144,7 @@ namespace IcySorcPindleBot.Helpers
         {
             var color = GetPixelColor(D2handle, row, col);
 
-            var color1checks = Math.Abs(color.R - 39) <= 15 && Math.Abs(color.G - 39) <= 15 && Math.Abs(color.B - 39) <= 15;
+            var color1checks = Math.Abs(color.R - 20) <= 10 && Math.Abs(color.G - 20) <= 10 && Math.Abs(color.B - 20) <= 10;
 
             return color1checks;
         }

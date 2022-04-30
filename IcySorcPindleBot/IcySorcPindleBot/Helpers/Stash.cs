@@ -113,6 +113,10 @@ namespace IcySorcPindleBot.Helpers
             }
             else
             {
+                Thread.Sleep(200);
+                Input.KeyboardPress(D2handle, 0x01);
+                Thread.Sleep(200);
+
                 throw new Exception("Stash is full. Empty it biiitch.");
             }
         }

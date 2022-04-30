@@ -89,21 +89,21 @@ namespace IcySorcPindleBot.Helpers
             // WP1
             inputs.RealisticMouseMove(D2handle, 1354, 61, 10, 5, 2);
             Input.RightMouseClick();
-            Thread.Sleep(200);
+            Thread.Sleep(300);
 
             // wp2
             inputs.RealisticMouseMove(D2handle, 1556, 148, 10, 5, 2);
             Input.RightMouseClick();
-            Thread.Sleep(200);
+            Thread.Sleep(300);
 
             //WP3
             inputs.RealisticMouseMove(D2handle, 1248, 362, 10, 5, 2);
             Input.RightMouseClick();
-            Thread.Sleep(200);
+            Thread.Sleep(300);
 
             inputs.RealisticMouseMove(D2handle, 1367, 249, 10, 5, 2);
             Input.RightMouseClick();
-            Thread.Sleep(200);
+            Thread.Sleep(300);
         }
 
         public void ToTyrael(IntPtr D2handle)

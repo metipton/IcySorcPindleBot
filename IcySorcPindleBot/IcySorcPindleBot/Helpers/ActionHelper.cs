@@ -31,7 +31,7 @@ namespace IcySorcPindleBot.Helpers
 
             //Todo pick up body if death
 
-            merc.ResurrectMerc(D2handle);
+            //merc.ResurrectMerc(D2handle);
         }
 
         public void CallToArms(IntPtr D2handle)
@@ -169,7 +169,7 @@ namespace IcySorcPindleBot.Helpers
             Thread.Sleep(200);
             var bitmap = ViewHelper.GetMapFromScreen(D2handle);
 
-            var currentItems = ItemFinder.FindItems(bitmap, D2handle);
+            var currentItems = ItemFinder.FindItemsUF(bitmap, D2handle);
 
             foreach (var item in currentItems)
             {
@@ -194,7 +194,7 @@ namespace IcySorcPindleBot.Helpers
                 Thread.Sleep(1000);
                 inputs.RealisticMouseMove(D2handle, 950, 100, 15, 5, 1);
                 bitmap = ViewHelper.GetMapFromScreen(D2handle);
-                currentItems = ItemFinder.FindItems(bitmap, D2handle);
+                currentItems = ItemFinder.FindItemsUF(bitmap, D2handle);
                 attempts++;
             }
 

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading;
+    using global::IcySorcPindleBot.Helpers.ItemHelper;
     using Helpers;
 
 
@@ -15,11 +16,13 @@
             var singlePlayerManager = new GameManager();
             var clientHelper = new ClientHelper();
             var views = new ViewHelper();
+            var items = new ItemFinder();
+            var actions = new ActionHelper();
             bool isMulti = true;
             bool inGame = false;
             bool trial = false;
-            int runCount = 1;
             Stash stash = new();
+            int stashErrorCount = 0;
 
             while (true)
             {
@@ -39,7 +42,7 @@
                         D2handle = clientHelper.GetD2WinHandle();
                     }
 
-                    stash.EmptyInventory(D2handle);
+                    actions.PickUpItems(D2handle);
 
                     while (true)
                     {
@@ -57,18 +60,27 @@
                         singlePlayerManager.JoinGame(isMulti);
                         singlePlayerManager.ManageStart();
                         singlePlayerManager.MoveToPortal();
-                        singlePlayerManager.CallToArms();
+                        //singlePlayerManager.CallToArms();
                         singlePlayerManager.TeleToPindle();
                         singlePlayerManager.ConductAttackSequence();
                         //singlePlayerManager.ConductExtendedAttack();
                         singlePlayerManager.MoveToLoot();
                         singlePlayerManager.PickUpItems();
-                        singlePlayerManager.LeaveGame();     
+                        singlePlayerManager.LeaveGame();
+                        stashErrorCount = 0;
                     }
                     catch(Exception ex)
                     {
                         Console.WriteLine(ex);
                         singlePlayerManager.LeaveGame();
+                        if(ex.Message.Equals("Stash is full. Empty it biiitch."))
+                        {
+                            stashErrorCount++;
+                        }
+                        if(stashErrorCount > 0)
+                        {
+                            break;
+                        }
                     }
 
                     Globals.RUN_NUMBER++;

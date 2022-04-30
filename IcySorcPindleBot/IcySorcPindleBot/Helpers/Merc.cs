@@ -37,7 +37,7 @@ namespace IcySorcPindleBot.Helpers
         {
             var mercCheckColor = views.GetPixelColor(D2handle, 70, 25);
 
-            return Math.Abs(mercCheckColor.G - 153) < 10;
+            return Math.Abs(mercCheckColor.G - 134) < 10;
         }
 
         public void ResurrectMerc(IntPtr D2handle)
