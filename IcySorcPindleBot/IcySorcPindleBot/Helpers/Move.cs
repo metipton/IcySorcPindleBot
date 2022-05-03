@@ -81,29 +81,38 @@ namespace IcySorcPindleBot.Helpers
             Thread.Sleep(1500);
         }
 
+        public void FromLoadStraightToPortal(IntPtr D2handle)
+        {
+            inputs.RealisticMouseMove(D2handle, 590, 906, 12, 0, 1);
+            Input.LeftMouseDown();
+            Thread.Sleep(5000);
+            Input.LeftMouseUp();
+            Thread.Sleep(1250);
+        }
+
         public void TeleToPindle(IntPtr D2handle, byte teleHotkey)
         {
             Console.WriteLine("Temple loaded.");
             Input.KeyboardPress(D2handle, teleHotkey);
 
             // WP1
-            inputs.RealisticMouseMove(D2handle, 1354, 61, 10, 5, 2);
+            inputs.RealisticMouseMove(D2handle, 1354, 61, 10, 5, 1);
             Input.RightMouseClick();
-            Thread.Sleep(300);
+            Thread.Sleep(200);
 
             // wp2
-            inputs.RealisticMouseMove(D2handle, 1556, 148, 10, 5, 2);
+            inputs.RealisticMouseMove(D2handle, 1556, 148, 10, 5, 1);
             Input.RightMouseClick();
-            Thread.Sleep(300);
+            Thread.Sleep(200);
 
             //WP3
-            inputs.RealisticMouseMove(D2handle, 1248, 362, 10, 5, 2);
+            inputs.RealisticMouseMove(D2handle, 1248, 362, 10, 5, 1);
             Input.RightMouseClick();
-            Thread.Sleep(300);
+            Thread.Sleep(200);
 
-            inputs.RealisticMouseMove(D2handle, 1367, 249, 10, 5, 2);
+            inputs.RealisticMouseMove(D2handle, 1367, 249, 10, 5, 1);
             Input.RightMouseClick();
-            Thread.Sleep(300);
+            Thread.Sleep(200);
         }
 
         public void ToTyrael(IntPtr D2handle)
@@ -164,10 +173,9 @@ namespace IcySorcPindleBot.Helpers
             inputs.RealisticMouseMove(D2handle, 1213, 414, 10, 5, 2);
             Thread.Sleep(200);
             Input.LeftMouseClick();
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             //Get mouse out of way for the screen shot
             inputs.RealisticMouseMove(D2handle, 750, 199, 10, 5, 2);
-            Thread.Sleep(200);
         }
     }
 }

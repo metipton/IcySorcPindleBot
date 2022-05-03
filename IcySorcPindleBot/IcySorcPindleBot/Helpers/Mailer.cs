@@ -11,7 +11,7 @@ namespace IcySorcPindleBot.Helpers
     {
         public static void SendItemFind(List<Item> items)
         {
-            if(items.Count == 1 && items[0].ItemType == "White")
+            if (items.Count == 1 && items[0].ItemType == "White")
             {
                 return;
             }
@@ -21,9 +21,9 @@ namespace IcySorcPindleBot.Helpers
             const string fromPassword = "tipton13!#";
             var body = $"{DateTime.Now} Run number: {Globals.RUN_NUMBER} - ";
 
-            foreach(var item in items)
+            foreach (var item in items)
             {
-                if(item.ItemType == "Rune")
+                if (item.ItemType == "Rune")
                 {
                     body += $" You just found a {item.ItemName}.";
 
@@ -31,7 +31,7 @@ namespace IcySorcPindleBot.Helpers
                 else if (item.ItemType != "White")
                 {
                     body += $" You just found a {item.ItemType} {item.ItemName}.";
-                }   
+                }
             }
 
             var smtp = new SmtpClient

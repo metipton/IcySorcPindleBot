@@ -43,7 +43,7 @@ namespace IcySorcPindleBot
                     isInDifficultySelection = views.IsInDifficultySelection(D2handle);
                 }
 
-                inputs.RealisticMouseMove(D2handle, 954, 500, 14, 2, 21);
+                inputs.RealisticMouseMove(D2handle, 954, 570, 14, 2, 21);
                 Thread.Sleep(500);
                 Input.LeftMouseClick();
                 Thread.Sleep(2000);
@@ -93,8 +93,6 @@ namespace IcySorcPindleBot
             }
 
             actions.MoveToPortal(D2handle);
-
-            //Todo - if not in load screen, exit game and restart
         }
 
         public void TeleToPindle()

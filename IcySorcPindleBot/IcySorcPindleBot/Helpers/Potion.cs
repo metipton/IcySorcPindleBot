@@ -8,8 +8,8 @@ namespace IcySorcPindleBot.Helpers
     public class Potion
     {
         private ViewHelper view;
-        public bool PotionPickedUpThisRun = false;
         private static Potion instance;
+        private int numPotions = 16;
 
         private Potion()
         {
@@ -26,43 +26,31 @@ namespace IcySorcPindleBot.Helpers
             return Potion.instance;
         }
 
-        public void TogglePotions(IntPtr D2handle)
+        public bool NeedPotions()
         {
-            //open the potions
-            Input.KeyboardPress(D2handle, 0x29);
-            Thread.Sleep(200);
-        }
-
-        public bool NeedPotions(IntPtr D2handle)
-        {
-            if (this.PotionPickedUpThisRun)
+            if(numPotions < 16)
             {
-                return false;
+                return true;
             }
-
-            TogglePotions(D2handle);
-
-            for(var i = 1115; i <= 1340; i += 62)
-            {
-                for(var j = 874; j <= 1045; j += 57)
-                {
-                    if(view.IsEmptyPotionSquare(D2handle, i, j))
-                    {
-                        TogglePotions(D2handle);
-                        return true;
-                    }
-                }
-            }
-
-            TogglePotions(D2handle);
 
             return false;
         }
 
+        public void AddPotion()
+        {
+            if(numPotions < 16)
+            {
+                this.numPotions++;
+            }
+            else
+            {
+                Console.WriteLine("Adding Potions when you are already full.");
+            }
+            
+        }
+
         public void UsePotion(IntPtr D2handle)
         {
-            this.PotionPickedUpThisRun = false;
-
             if (!view.IsHealthLow(D2handle))
             {
                 return;
@@ -83,6 +71,7 @@ namespace IcySorcPindleBot.Helpers
                 {
                     //hit i
                     Input.KeyboardPress(D2handle, scanCodes[i]);
+                    numPotions--;
                     Thread.Sleep(100);
 
                     break;

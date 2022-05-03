@@ -15,8 +15,8 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
         Potion potion = Potion.GetInstance();
         readonly List<string> keepRunes = new List<string>() { "LEMRUNE", "PULRUNE", "UMRUNE", "MALRUNE", "ISTRUNE", "GULRUNE", "VEXRUNE", "OHMRUNE", "LORUNE", "SURRUNE", "BERRUNE", "JAHRUNE", "CHAMRUNE", "ZODRUNE" };
         readonly List<string> runeExclusionList = new List<string>() { "ELRUNE", "ELDRUNE", "TIRRUNE", "NEFRUNE", "ETHRUNE", "ITHRUNE", "TALRUNE", "RALRUNE", "RTRUNE", "THULRUNE", "AMNRUNE", "SLRUNE", "SHAELRUNE", "DLRUNE", "HELRUNE", "IRUNE", "KRUNE" };
-        readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING" };
-        //readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING", "LEATHERGLOVES", "HEAVYGLOVES", "CHAINGLOVES", "LIGHTGAUNTLETS", "GAUNTLETS", "DEMONHIDEGLOVES", "SHARKSKINGLOVES", "HEAVYBRACERS", "BATTLEGAUNTLETS", "WARGAUNTLETS", "BRAMBLEMITTS", "VAMPIREBONEGLOVES", "VAMBRACES", "CRUSADERGAUNTLETS", "OGREGAUNTLETS" };
+        //readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING" };
+        readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING", "LEATHERGLOVES", "HEAVYGLOVES", "CHAINGLOVES", "LIGHTGAUNTLETS", "GAUNTLETS", "DEMONHIDEGLOVES", "SHARKSKINGLOVES", "HEAVYBRACERS", "BATTLEGAUNTLETS", "WARGAUNTLETS", "BRAMBLEMITTS", "VAMPIREBONEGLOVES", "VAMBRACES", "CRUSADERGAUNTLETS", "OGREGAUNTLETS" };
         readonly List<string> keepMagicals = new List<string>() { "SMALLCHARM", "LARGECHARM", "GRANDCHARM", "MONARCH", "JEWEL" };
         readonly List<string> MagicalTrashList = new List<string> { "RNDEL", "HEL", "DGEL" };
         readonly List<string> keepWhites = new List<string>() { "SUPERHEALINGPOTION"};
@@ -300,7 +300,14 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
                 var croppedBmp = bmp.Clone(rect, PixelFormat.Format32bppRgb);
 
                 ConvertBitmapToBlackWhite(croppedBmp, item.ItemType);
-                croppedBmp.Save($@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\itemname{counter}.png", System.Drawing.Imaging.ImageFormat.Png);
+                try
+                {
+                    croppedBmp.Save($@"C:\Users\michael\source\repos\PixelBot\IcySorcPindleBot\IcySorcPindleBot\tessdata\ScreenCapture\itemname{counter}.png", System.Drawing.Imaging.ImageFormat.Png);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Failed to save item image due to {ex.Message}");
+                }
                 item.ItemName = ReadWordFromScreen(croppedBmp);
                 counter++;
                 croppedBmp.Dispose();
@@ -358,20 +365,20 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
                 return true;
             }
 
-            if (item.ItemType == "Rune" )
+            if (item.ItemType == "Rune" && !runeExclusionList.Contains(item.ItemName))
             {
-                //&& !runeExclusionList.Contains(item.ItemName)
+
                 return true;
             }
 
-            if (item.ItemType == "Set" )
+            if (item.ItemType == "Set" && CheckAllEditDistance(item.ItemName, keepSet, 3))
             {
-                //&& CheckAllEditDistance(item.ItemName, keepSet, 3)
                 return true;
             }
 
             if (item.ItemType == "Rare" && CheckAllEditDistance(item.ItemName, keepRares, 1))
             {
+                //&& CheckAllEditDistance(item.ItemName, keepRares, 1)
                 return true;
             }
 
@@ -381,16 +388,12 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
             }
 
             if(item.ItemType == "White" && CheckAllEditDistance(item.ItemName, keepWhites, 2)
-                && potion.NeedPotions(D2handle))
+                && potion.NeedPotions())
             {
-                potion.PotionPickedUpThisRun = true;
+                potion.AddPotion();
                 return true;
             }
 
-            //if (item.ItemType == "White" && CheckAllEditDistance(item.ItemName, keepWhites, 5))
-            //{
-            //    return true;
-            //}
             return false;
         }
 

@@ -51,29 +51,29 @@ namespace IcySorcPindleBot.Helpers
 
         public void MoveToPortal(IntPtr D2handle)
         {
-            move.FromLoadToStashDecision(D2handle);
-
             CheckForItems(D2handle, 15);
 
             if (!this.hasItem)
             {
-                move.FromStashDecisionToPortal(D2handle);
+                move.FromLoadStraightToPortal(D2handle);
             }
             else
             {
+                move.FromLoadToStashDecision(D2handle);
+
                 move.FromStashDecisionPointToStash(D2handle);
 
                 stash.EmptyInventory(D2handle);
                 this.hasItem = false;
 
-                move.FromStashToPortal(D2handle);
-            }
+                move.FromStashToPortal(D2handle);          
+            }     
 
             var portalAttempts = 0;
 
             var hasHitLoadScreen = false;
             //try one last time to get the portal
-            while (!hasHitLoadScreen && !view.IsTempleLoaded(D2handle) && portalAttempts < 5)
+            while (!hasHitLoadScreen && !view.IsTempleLoaded(D2handle) && portalAttempts < 2)
             {
                 //take snapshot, find largest black thing
                 var portalLocation = view.GetPortalLocation(D2handle);

@@ -8,8 +8,6 @@
 
     class IcySorcPindleBot
     {
-
-
         // Main Method
         static void Main(string[] args)
         {
@@ -18,9 +16,8 @@
             var views = new ViewHelper();
             var items = new ItemFinder();
             var actions = new ActionHelper();
-            bool isMulti = true;
-            bool inGame = false;
             bool trial = false;
+            bool isMulti = true;
             Stash stash = new();
             int stashErrorCount = 0;
 

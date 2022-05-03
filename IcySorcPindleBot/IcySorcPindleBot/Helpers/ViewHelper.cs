@@ -66,24 +66,6 @@ namespace IcySorcPindleBot.Helpers
             var color1checks = Math.Abs(color1.R - 12) <= 20 && Math.Abs(color1.G - 26) <= 20 && Math.Abs(color1.B - 45) <= 20;
             var color2checks = Math.Abs(color2.R - 22) <= 20 && Math.Abs(color2.G - 42) <= 20 && Math.Abs(color2.B - 70) <= 20;
 
-            if (color1checks)
-            {
-                Console.WriteLine("color 1 true");
-            }
-            else
-            {
-                Console.WriteLine("Color 1 false");
-            }
-
-            if (color2checks)
-            {
-                Console.WriteLine("color 2 true");
-            }
-            else
-            {
-                Console.WriteLine("Color 2 false");
-            }
-
             return color1checks && color2checks;
         }
 
