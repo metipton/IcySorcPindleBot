@@ -22,7 +22,10 @@ namespace IcySorcPindleBot.Helpers
 
             var body = GetItemMessageBody(items);
 
-            SendMessage(body);
+            if (!body.Equals(String.Empty))
+            {
+                SendMessage(body);
+            }
         }
 
         public static void SendHeartBeatMessage()
@@ -75,7 +78,8 @@ namespace IcySorcPindleBot.Helpers
 
         private static string GetItemMessageBody(List<Item> items)
         {
-            var body = $"{DateTime.Now} Run number: {Globals.RUN_NUMBER} - ";
+            var baseStr = $"{DateTime.Now} Run number: {Globals.RUN_NUMBER} - ";
+            var body = baseStr;
 
             foreach (var item in items)
             {
@@ -88,6 +92,11 @@ namespace IcySorcPindleBot.Helpers
                 {
                     body += $" You just found a {item.ItemType} {item.ItemName}.";
                 }
+            }
+
+            if (body.Equals(baseStr))
+            {
+                return String.Empty;
             }
 
             return body;
