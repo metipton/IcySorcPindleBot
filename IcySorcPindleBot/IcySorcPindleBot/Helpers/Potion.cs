@@ -28,7 +28,7 @@ namespace IcySorcPindleBot.Helpers
 
         public bool NeedPotions()
         {
-            if(numPotions < 16)
+            if(numPotions < 12)
             {
                 return true;
             }

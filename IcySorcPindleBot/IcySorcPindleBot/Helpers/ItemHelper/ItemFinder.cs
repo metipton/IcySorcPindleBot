@@ -15,8 +15,8 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
         Potion potion = Potion.GetInstance();
         readonly List<string> keepRunes = new List<string>() { "LEMRUNE", "PULRUNE", "UMRUNE", "MALRUNE", "ISTRUNE", "GULRUNE", "VEXRUNE", "OHMRUNE", "LORUNE", "SURRUNE", "BERRUNE", "JAHRUNE", "CHAMRUNE", "ZODRUNE" };
         readonly List<string> runeExclusionList = new List<string>() { "ELRUNE", "ELDRUNE", "TIRRUNE", "NEFRUNE", "ETHRUNE", "ITHRUNE", "TALRUNE", "RALRUNE", "RTRUNE", "THULRUNE", "AMNRUNE", "SLRUNE", "SHAELRUNE", "DLRUNE", "HELRUNE", "IRUNE", "KRUNE" };
-        //readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING" };
-        readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING", "LEATHERGLOVES", "HEAVYGLOVES", "CHAINGLOVES", "LIGHTGAUNTLETS", "GAUNTLETS", "DEMONHIDEGLOVES", "SHARKSKINGLOVES", "HEAVYBRACERS", "BATTLEGAUNTLETS", "WARGAUNTLETS", "BRAMBLEMITTS", "VAMPIREBONEGLOVES", "VAMBRACES", "CRUSADERGAUNTLETS", "OGREGAUNTLETS" };
+        readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING" };
+        //readonly List<string> keepRares = new List<string>() { "CIRCLET", "TIARA", "DIADEM", "CORONET", "CORONA", "AMULET", "RING", "LEATHERGLOVES", "HEAVYGLOVES", "CHAINGLOVES", "LIGHTGAUNTLETS", "GAUNTLETS", "DEMONHIDEGLOVES", "SHARKSKINGLOVES", "HEAVYBRACERS", "BATTLEGAUNTLETS", "WARGAUNTLETS", "BRAMBLEMITTS", "VAMPIREBONEGLOVES", "VAMBRACES", "CRUSADERGAUNTLETS", "OGREGAUNTLETS" };
         readonly List<string> keepMagicals = new List<string>() { "SMALLCHARM", "LARGECHARM", "GRANDCHARM", "MONARCH", "JEWEL" };
         readonly List<string> MagicalTrashList = new List<string> { "RNDEL", "HEL", "DGEL" };
         readonly List<string> keepWhites = new List<string>() { "SUPERHEALINGPOTION"};
@@ -86,7 +86,12 @@ namespace IcySorcPindleBot.Helpers.ItemHelper
                 }
             }
 
-            var whites = GetUnionFindItems(UnionFind(whitePixels), whitePixels, "White");
+            var whites = new List<Item>();
+            if (potion.NeedPotions())
+            {
+                whites = GetUnionFindItems(UnionFind(whitePixels), whitePixels, "White");
+            }
+
             var uniques = GetUnionFindItems(UnionFind(uniquePixels), uniquePixels, "Unique");
             var rares = GetUnionFindItems(UnionFind(rarePixels), rarePixels, "Rare");
             var sets = GetUnionFindItems(UnionFind(setPixels), setPixels, "Set");

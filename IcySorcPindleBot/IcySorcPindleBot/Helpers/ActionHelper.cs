@@ -37,21 +37,21 @@ namespace IcySorcPindleBot.Helpers
         public void CallToArms(IntPtr D2handle)
         {
             Input.KeyboardPress(D2handle, 0x11);
-            Thread.Sleep(300);
-            Input.KeyboardPress(D2handle, 0x3E);
-            Thread.Sleep(300);
-            Input.RightMouseClick();
-            Thread.Sleep(1000);
+            Thread.Sleep(400);
             Input.KeyboardPress(D2handle, 0x3F);
-            Thread.Sleep(300);
+            Thread.Sleep(400);
             Input.RightMouseClick();
-            Thread.Sleep(500);
+            Thread.Sleep(1200);
+            Input.KeyboardPress(D2handle, 0x40);
+            Thread.Sleep(400);
+            Input.RightMouseClick();
+            Thread.Sleep(700);
             Input.KeyboardPress(D2handle, 0x11);
         }
 
         public void MoveToPortal(IntPtr D2handle)
         {
-            CheckForItems(D2handle, 15);
+            //CheckForItems(D2handle, 1);
 
             if (!this.hasItem)
             {
@@ -66,8 +66,8 @@ namespace IcySorcPindleBot.Helpers
                 stash.EmptyInventory(D2handle);
                 this.hasItem = false;
 
-                move.FromStashToPortal(D2handle);          
-            }     
+                move.FromStashToPortal(D2handle);
+            }
 
             var portalAttempts = 0;
 
@@ -80,9 +80,9 @@ namespace IcySorcPindleBot.Helpers
                 inputs.RealisticMouseMove(D2handle, portalLocation.X, portalLocation.Y, 12, 5, 1);
                 Input.LeftMouseClick();
 
-                var counter = 0; 
+                var counter = 0;
 
-                while (!hasHitLoadScreen && counter < 25 )
+                while (!hasHitLoadScreen && counter < 25)
                 {
                     if (view.IsInLoadScreen(D2handle))
                     {
@@ -91,15 +91,15 @@ namespace IcySorcPindleBot.Helpers
                     Thread.Sleep(100);
                     counter++;
                 }
-                
-                if(portalAttempts > 0)
+
+                if (portalAttempts > 0)
                 {
                     Console.WriteLine($@"Failed to find portal one atttempt: {portalAttempts - 1}");
                 }
                 portalAttempts++;
             }
 
-            if(portalAttempts >= 5)
+            if (portalAttempts >= 2)
             {
                 Console.WriteLine("Failed to find portal after 5 attempts. Leaving game.");
                 LeaveGame(D2handle);
@@ -107,9 +107,18 @@ namespace IcySorcPindleBot.Helpers
                 throw new Exception("Restarting run");
             }
 
-            while (!view.IsTempleLoaded(D2handle))
+            var failurecounter = 0;
+            while (!view.IsTempleLoaded(D2handle) && failurecounter < 15)
             {
                 Thread.Sleep(500);
+                failurecounter++;
+            }
+
+            if(failurecounter >= 15)
+            {
+                LeaveGame(D2handle);
+                Thread.Sleep(5000);
+                throw new Exception("Restarting run");
             }
         }
 
@@ -176,7 +185,7 @@ namespace IcySorcPindleBot.Helpers
                 Console.WriteLine($@"Found {item.ItemType} {item.ItemName}");
             }
 
-            if ( currentItems.Count > 0)
+            if (currentItems.Count > 0)
             {
                 this.hasItem = currentItems.Where(item => item.ItemType != "White").Any();
                 Mailer.SendItemFind(currentItems);
@@ -205,11 +214,13 @@ namespace IcySorcPindleBot.Helpers
         {
             //going to check randomly every 15 runs or so just to make sure to drop off random shit we pick up by accident
             var randCheck = rnd.Next(prob);
-            
+
             if (randCheck == prob - 1)
             {
                 this.hasItem = this.hasItem || stash.InventoryHasItems(D2handle);
             }
+
+            Thread.Sleep(500);
 
             return hasItem;
         }
@@ -222,7 +233,7 @@ namespace IcySorcPindleBot.Helpers
 
             Thread.Sleep(700);
 
-            while(view.IsInLoadScreen(D2handle))
+            while (view.IsInLoadScreen(D2handle))
             {
                 Thread.Sleep(300);
             }
