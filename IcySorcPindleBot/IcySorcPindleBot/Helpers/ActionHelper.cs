@@ -21,6 +21,7 @@ namespace IcySorcPindleBot.Helpers
 
         public void ManageStart(IntPtr D2handle, byte frozenHotkey)
         {
+            Mailer.SendHeartBeatMessage();
             Thread.Sleep(300);
 
             Input.KeyboardPress(D2handle, frozenHotkey);
